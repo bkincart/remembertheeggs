@@ -28,7 +28,7 @@ class InventoryIndexContainer extends Component {
   addNewGrocery(formPayload) {
     fetch('/api/v1/groceries', {
       method: 'POST',
-      body: { grocery: JSON.stringify(formPayload) }
+      body: { grocery: { name: JSON.stringify(formPayload).name, unit: JSON.stringify(formPayload).unit }
     })
     .then(response => response.json())
     .then(responseData => {
