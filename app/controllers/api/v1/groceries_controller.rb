@@ -4,6 +4,7 @@ class Api::V1::GroceriesController < Api::V1::BaseController
   end
 
   def create
+    binding.pry
     respond_with :api, :v1, Grocery.create(grocery_params)
   end
 
@@ -20,6 +21,6 @@ class Api::V1::GroceriesController < Api::V1::BaseController
   private
 
   def grocery_params
-    params.require(:grocery).permit(:name, :measurement)
+    params.require(:grocery).permit(:name, :unit)
   end
 end

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import GroceryFormContainer from './GroceryFormContainer'
 
 class InventoryIndexContainer extends Component {
   constructor(props) {
@@ -8,6 +9,8 @@ class InventoryIndexContainer extends Component {
       inventories: [],
       locations: []
     }
+
+    this.addNewGrocery = this.addNewGrocery.bind(this);
   }
   componentDidMount() {
     fetch('/api/v1/groceries')
@@ -20,7 +23,17 @@ class InventoryIndexContainer extends Component {
     .then(responseData => {
       this.setState({ locations: [...this.state.locations, ...responseData] })
     })
+  }
 
+  addNewGrocery(formPayload) {
+    fetch('/api/v1/groceries', {
+      method: 'POST',
+      body: { grocery: JSON.stringify(formPayload) }
+    })
+    .then(response => response.json())
+    .then(responseData => {
+      this.setState({ groceries: [...this.state.groceries, responseData] })
+    })
   }
 
   render() {
@@ -29,18 +42,18 @@ class InventoryIndexContainer extends Component {
         <li>{grocery.name}</li>
       )
     })
-    let locations = this.state.locations.map(location =>{
-      return(
-        <li>{location.name}</li>
-      )
-    })
+    // let locations = this.state.locations.map(location =>{
+    //   return(
+    //     <li>{location.name}</li>
+    //   )
+    // })
 
     return (
       <div>
-        <ul>
-          {groceries}
-          {locations}
-        </ul>
+        <GroceryFormContainer
+          addNewGrocery = {this.addNewGrocery}
+        />
+        {groceries}
       </div>
     )
   }
